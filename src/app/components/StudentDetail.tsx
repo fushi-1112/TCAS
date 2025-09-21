@@ -1,9 +1,12 @@
-// components/StudentDetail.tsx
-import { useParams } from "react-router-dom";
+"use client";
+
 import { useStudentStore } from "../store/studentStore";
+import { useParams } from "next/navigation";
+import Image from "next/image";
 
 export default function StudentDetail() {
-  const { id } = useParams();
+  const params = useParams();
+  const id = params.id;
   const student = useStudentStore((s) => s.portfolios.find((p) => p.id === id));
 
   if (!student) return <p>ไม่พบนักเรียน</p>;
@@ -16,7 +19,15 @@ export default function StudentDetail() {
       <p>สาขา: {student.major} ({student.university})</p>
       <p>Talent: {student.talent}</p>
       <p>เหตุผล: {student.reason}</p>
-      {student.image && <img src={student.image} alt="profile" className="w-40 h-40 object-cover" />}
+      {student.image && (
+        <Image
+          src={student.image}
+          alt="profile"
+          width={160}
+          height={160}
+          className="object-cover rounded-full"
+        />
+      )}
     </div>
   );
 }
